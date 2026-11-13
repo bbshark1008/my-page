@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진상팍의 바닷속 자기소개 🌊</title>
+    <!-- 구글 폰트 적용 (나눔손글씨 펜 / 맑은고딕 류) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === 기본 스타일 및 테마 설정 === */
+        :root {
+            --bg-deep-ocean: #00122e;
+            --bg-mid-ocean: #003366;
+            --bg-light-ocean: #005f9e;
+            --accent-coral: #ff6b6b;
+            --accent-gold: #ffd166;
+            --accent-mint: #06d6a0;
+            --text-light: #f4f9ff;
+            --card-front: rgba(255, 255, 255, 0.15);
+            --card-back: rgba(6, 214, 160, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            font-family: 'Jua', 'Noto Sans KR', sans-serif;
+            background: linear-gradient(180deg, #0284c7 0%, #0369a1 25%, #0f172a 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        /* === 바닷속 배경 요소 (물고기, 기포) === */
+        .bubble {
+            position: fixed;
+            bottom: -50px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: rise 8s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        .swimming-fish {
+            position: fixed;
+            font-size: 2.5rem;
+            pointer-events: none;
+            z-index: 1;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+            animation: swim linear infinite;
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-10vw) scaleX(1); }
+            50% { transform: translateX(105vw) scaleX(1); }
+            50.01% { transform: translateX(105vw) scaleX(-1); }
+            100% { transform: translateX(-10vw) scaleX(-1); }
+        }
+
+        /* === Container 레이아웃 === */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 10px 20px;
+        }
+
+        /* 통통 튀는 별명 글자 애니메이션 */
+        .title-bounce {
+            display: inline-block;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+            text-shadow: 3px 3px 0px var(--accent-coral), 6px 6px 12px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .title-bounce span {
+            display: inline-block;
+            animation: bounce 1.2s infinite ease-in-out alternate;
+        }
+
+        /* 각 글자별로 애니메이션 지연(delay) 부여 */
+        .title-bounce span:nth-child(1) { animation-delay: 0.0s; }
+        .title-bounce span:nth-child(2) { animation-delay: 0.15s; }
+        .title-bounce span:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                transform: translateY(-22px) scale(1.15) rotate(-3deg);
+                color: #ffffff;
+                text-shadow: 0 0 15px var(--accent-gold);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bae6fd;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 24px;
+            margin-top: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: var(--accent-mint);
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* === 3D 카드 뒤집기 (좋아하는 것 3가지) === */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            perspective: 1000px;
+        }
+
+        .card-container {
+            height: 220px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            border-radius: 16px;
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+        }
+
+        .card-front .icon {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .card-front h3 {
+            font-size: 1.4rem;
+            color: var(--accent-gold);
+        }
+
+        .card-front .tap-hint {
+            font-size: 0.85rem;
+            color: #93c5fd;
+            margin-top: 8px;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #0284c7, #0f172a);
+            color: #ffffff;
+            transform: rotateY(180deg);
+            border-color: var(--accent-mint);
+        }
+
+        .card-back p {
+            font-size: 1rem;
+            line-height: 1.5;
+            word-break: keep-all;
+        }
+
+        /* === OX 퀴즈 === */
+        .quiz-box {
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        .quiz-btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .quiz-btn {
+            width: 90px;
+            height: 90px;
+            font-size: 2.5rem;
+            font-weight: 900;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            color: white;
+            font-family: 'Jua', sans-serif;
+        }
+
+        .quiz-btn-o {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .quiz-btn-x {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .quiz-btn:active {
+            transform: scale(0.9);
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            min-height: 40px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .quiz-result.correct {
+            color: var(--accent-mint);
+            animation: pulse 0.5s ease;
+        }
+
+        .quiz-result.wrong {
+            color: var(--accent-coral);
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* === 점심 메뉴 추천 === */
+        .lunch-box {
+            text-align: center;
+        }
+
+        .lunch-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 209, 102, 0.3);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #06d6a0, #059669);
+            color: #000;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(6, 214, 160, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Jua', sans-serif;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 214, 160, 0.6);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* === 10초 클릭 미니게임 === */
+        .game-box {
+            text-align: center;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .stat-item {
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            color: var(--accent-gold);
+            font-weight: bold;
+            display: block;
+        }
+
+        .click-target-btn {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background: linear-gradient(135deg, #ff6b6b, #ee5253);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            transition: transform 0.05s, background-color 0.3s;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Jua', sans-serif;
+        }
+
+        .click-target-btn:active {
+            transform: scale(0.92);
+        }
+
+        .click-target-btn:disabled {
+            background: #64748b;
+            box-shadow: none;
+            cursor: not-allowed;
+            border-color: #94a3b8;
+        }
+
+        .game-message {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: var(--accent-mint);
+            min-height: 30px;
+        }
+
+        /* 폭죽/축하 효과 캔버스 */
+        #effectCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* 반응형 디테일 설정 */
+        @media (max-width: 600px) {
+            .title-bounce { font-size: 2.3rem; }
+            .subtitle { font-size: 1rem; }
+            section { padding: 18px; margin-top: 20px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .card-container { height: 180px; }
+            .quiz-btn { width: 75px; height: 75px; font-size: 2rem; }
+            .click-target-btn { width: 120px; height: 120px; font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 축하 및 미니게임 이펙트용 캔버스 -->
+    <canvas id="effectCanvas"></canvas>
+
+    <!-- 돌아다니는 물고기 배경 요소 -->
+    <div class="swimming-fish" style="top: 15%; animation-duration: 18s; animation-delay: 0s;">🐟</div>
+    <div class="swimming-fish" style="top: 40%; animation-duration: 24s; animation-delay: -5s;">🐠</div>
+    <div class="swimming-fish" style="top: 70%; animation-duration: 15s; animation-delay: -10s;">🐡</div>
+    <div class="swimming-fish" style="top: 85%; animation-duration: 20s; animation-delay: -2s;">🦈</div>
+
+    <div class="container">
+        <!-- 메인 헤더: 통통 튀는 별명 애니메이션 -->
+        <header>
+            <h1 class="title-bounce">
+                <span>진</span><span>상</span><span>팍</span>
+            </h1>
+            <p class="subtitle">🌊 깊은 바닷속에서 유영하는 흥미진진 탐험가 🌊</p>
+        </header>
+
+        <!-- 섹션 1: 좋아하는 것 3가지 (카드 뒤집기) -->
+        <section>
+            <h2 class="section-title">✨ 내가 좋아하는 3가지</h2>
+            <p style="text-align: center; font-size: 0.9rem; color: #93c5fd; margin-bottom: 15px;">카드를 클릭하면 진짜 이유가 밝혀집니다!</p>
+            <div class="cards-grid">
+                <!-- 카드 1: 게임 -->
+                <div class="card-container" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon">🎮</div>
+                            <h3>게임</h3>
+                            <span class="tap-hint">👆 터치해서 뒤집기</span>
+                        </div>
+                        <div class="card-back">
+                            <p><strong>좋아하는 이유:</strong><br>현실에서는 심해어처럼 가만히 있지만, 게임 속에선 세상을 구하는 전설의 영웅이 될 수 있으니까!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 2: 노래 -->
+                <div class="card-container" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon">🎧</div>
+                            <h3>노래</h3>
+                            <span class="tap-hint">👆 터치해서 뒤집기</span>
+                        </div>
+                        <div class="card-back">
+                            <p><strong>좋아하는 이유:</strong><br>샤워할 때 노래 부르면 내가 바로 빌보드 1위 가수! (고래도 울고 갈 가창력 보유 중)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 카드 3: 유튜브 -->
+                <div class="card-container" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="icon">📺</div>
+                            <h3>유튜브</h3>
+                            <span class="tap-hint">👆 터치해서 뒤집기</span>
+                        </div>
+                        <div class="card-back">
+                            <p><strong>좋아하는 이유:</strong><br>"5분만 봐야지" 하고 들어갔다가 정신 차려보면 새벽 3시가 되어있는 마법의 공간이라서!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 섹션 2: OX 퀴즈 -->
+        <section>
+            <h2 class="section-title">❓ 진상팍 OX 퀴즈</h2>
+            <div class="quiz-box">
+                <div class="quiz-question"> Q. "나는 진상이다" </div>
+                <div class="quiz-btn-group">
+                    <button class="quiz-btn quiz-btn-o" onclick="checkQuiz('O')">O</button>
+                    <button class="quiz-btn quiz-btn-x" onclick="checkQuiz('X')">X</button>
+                </div>
+                <div id="quizResult" class="quiz-result"></div>
+            </div>
+        </section>
+
+        <!-- 섹션 3: 오늘의 점심 메뉴 추천 -->
+        <section>
+            <h2 class="section-title">🍱 오늘의 점심 추천</h2>
+            <div class="lunch-box">
+                <div id="lunchDisplay" class="lunch-display">
+                    버튼을 눌러 메뉴를 추천받으세요! 🤤
+                </div>
+                <button class="action-btn" onclick="recommendLunch()">🎲 메뉴 뽑기!</button>
+            </div>
+        </section>
+
+        <!-- 섹션 4: 10초 클릭 미니게임 -->
+        <section>
+            <h2 class="section-title">⚡ 10초 광클 미니게임</h2>
+            <div class="game-box">
+                <div class="game-stats">
+                    <div class="stat-item">남은 시간<span id="gameTimer" class="stat-value">10s</span></div>
+                    <div class="stat-item">클릭 수<span id="clickCount" class="stat-value">0</span></div>
+                </div>
+                <button id="clickGameBtn" class="click-target-btn" onclick="handleGameClick()">
+                    <span>클릭!</span>
+                </button>
+                <div id="gameMessage" class="game-message">준비되셨나요? 버튼을 눌러 시작하세요!</div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 진상팍 (JinSang-Pak). All rights reserved.</p>
+            <p style="margin-top: 5px; font-size: 0.8rem; color: #64748b;">본 페이지는 수중 무중력 상태로 제작되었습니다 🫧</p>
+        </footer>
+    </div>
+
+    <!-- === 자바스크립트 로직 === -->
+    <script>
+        /* --------------------------------------------------
+         * 1. 배경 기포(Bubbles) 동적 생성
+         * -------------------------------------------------- */
+        function createBubbles() {
+            const bubbleCount = 20;
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // 랜덤 크기 설정 (10px ~ 40px)
+                const size = Math.random() * 30 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // 랜덤 위치 및 애니메이션 속도 설정
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.animationDuration = `${Math.random() * 6 + 5}s`;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                document.body.appendChild(bubble);
+            }
+        }
+        createBubbles();
+
+        /* --------------------------------------------------
+         * 2. 카드 뒤집기 (3D Flip)
+         * -------------------------------------------------- */
+        function flipCard(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        /* --------------------------------------------------
+         * 3. OX 퀴즈 로직 및 효과
+         * -------------------------------------------------- */
+        function checkQuiz(userAnswer) {
+            const resultDiv = document.getElementById('quizResult');
+            
+            if (userAnswer === 'X') {
+                resultDiv.className = 'quiz-result correct';
+                resultDiv.innerHTML = '🎉 정답입니다! 진상팍은 진상이 아니라 귀염둥이입니다! 💖';
+                triggerConfetti(); // 축하 폭죽 효과
+            } else {
+                resultDiv.className = 'quiz-result wrong';
+                resultDiv.innerHTML = '😭 땡! 억울합니다! 진상팍은 착한 사람입니다... 🌊';
+                triggerSadEffect(); // 아쉬운 기포 효과
+            }
+        }
+
+        /* --------------------------------------------------
+         * 4. 오늘의 점심 메뉴 추천 (10개 이상)
+         * -------------------------------------------------- */
+        const lunchMenu = [
+            "🍕 해물 피자",
+            "🍔 얼큰 해물 버거",
+            "🍜 얼큰한 해물짬뽕",
+            "🍣 싱싱한 초밥 세트",
+            "🍲 시원한 바지락 칼국수",
+            "🍱 매콤 달콤 제육덮밥",
+            "🍛 깊은 맛 돈까스 커리",
+            "🥘 보글보글 부대찌개",
+            "🍝 고소한 알리오 올리오",
+            "🥩 육즙 가득 찹스테이크",
+            "🥣 뜨끈한 국밥 한 그릇",
+            "🥗 프레시 연어 샐러드"
+        ];
+
+        let isRolling = false;
+        function recommendLunch() {
+            if (isRolling) return;
+            isRolling = true;
+
+            const display = document.getElementById('lunchDisplay');
+            let counter = 0;
+            
+            // 굴러가는 슬롯머신 효과
+            const interval = setInterval(() => {
+                const randomTemp = lunchMenu[Math.floor(Math.random() * lunchMenu.length)];
+                display.innerText = randomTemp;
+                counter++;
+
+                if (counter > 12) {
+                    clearInterval(interval);
+                    const finalChoice = lunchMenu[Math.floor(Math.random() * lunchMenu.length)];
+                    display.innerText = `👉 ${finalChoice} 👈`;
+                    isRolling = false;
+                    triggerConfetti();
+                }
+            }, 80);
+        }
+
+        /* --------------------------------------------------
+         * 5. 10초 광클 미니게임
+         * -------------------------------------------------- */
+        let gameState = 'IDLE'; // IDLE, RUNNING, FINISHED
+        let score = 0;
+        let timeLeft = 10;
+        let timerId = null;
+
+        const timerDisplay = document.getElementById('gameTimer');
+        const scoreDisplay = document.getElementById('clickCount');
+        const gameBtn = document.getElementById('clickGameBtn');
+        const gameMsg = document.getElementById('gameMessage');
+
+        function handleGameClick() {
+            if (gameState === 'IDLE') {
+                // 게임 시작
+                gameState = 'RUNNING';
+                score = 1;
+                timeLeft = 10;
+                scoreDisplay.innerText = score;
+                timerDisplay.innerText = timeLeft + 's';
+                gameMsg.innerText = '🔥 누르세요! 더 빠르게!';
+                gameBtn.querySelector('span').innerText = '클릭!!!';
+
+                // 타이머 카운트다운
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.innerText = timeLeft + 's';
+
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            } else if (gameState === 'RUNNING') {
+                // 게임 진행 중 클릭
+                score++;
+                scoreDisplay.innerText = score;
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerId);
+            gameState = 'FINISHED';
+            gameBtn.disabled = true;
+            gameBtn.querySelector('span').innerText = '종료!';
+
+            let evaluation = '';
+            if (score >= 70) {
+                evaluation = '🧜‍♂️ 바다의 신급 손가락 속도!';
+                triggerConfetti();
+            } else if (score >= 45) {
+                evaluation = '🐬 돌고래급으로 빠른 손가락!';
+                triggerConfetti();
+            } else if (score >= 25) {
+                evaluation = '🐢 거북이보다 빠른 수영 속도!';
+            } else {
+                evaluation = '🐚 거북이 승리! 조금 더 연습해 보세요!';
+            }
+
+            gameMsg.innerHTML = `🏆 기록: <strong>${score}회</strong>!<br>${evaluation}`;
+
+            // 3초 후 게임 리셋 가능하게 변경
+            setTimeout(() => {
+                gameState = 'IDLE';
+                gameBtn.disabled = false;
+                gameBtn.querySelector('span').innerText = '재도전!';
+            }, 3000);
+        }
+
+        /* --------------------------------------------------
+         * 6. Canvas 기반 이펙트 (축하 폭죽 / 아쉬움 수중 효과)
+         * -------------------------------------------------- */
+        const canvas = document.getElementById('effectCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+
+        // 정답/성공 시 파티클 폭죽
+        function triggerConfetti() {
+            particles = [];
+            const colors = ['#06d6a0', '#ffd166', '#ff6b6b', '#3b82f6', '#ffffff'];
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.5) * 14 - 3,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    alpha: 1,
+                    decay: Math.random() * 0.02 + 0.015,
+                    shape: Math.random() > 0.5 ? 'circle' : 'star'
+                });
+            }
+            animateParticles();
+        }
+
+        // 오답 시 아쉬운 기포 이펙트
+        function triggerSadEffect() {
+            particles = [];
+            for (let i = 0; i < 40; i++) {
+                particles.push({
+                    x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+                    y: canvas.height / 2 + (Math.random() - 0.5) * 100,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: Math.random() * 4 + 2, // 아래로 드랍
+                    size: Math.random() * 6 + 3,
+                    color: '#94a3b8',
+                    alpha: 1,
+                    decay: 0.02,
+                    shape: 'bubble'
+                });
+            }
+            animateParticles();
+        }
+
+        let animationFrameId = null;
+        function animateParticles() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            
+            function loop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let aliveCount = 0;
+
+                particles.forEach(p => {
+                    if (p.alpha > 0) {
+                        aliveCount++;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.alpha -= p.decay;
+
+                        ctx.save();
+                        ctx.globalAlpha = Math.max(0, p.alpha);
+                        ctx.fillStyle = p.color;
+
+                        if (p.shape === 'circle') {
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.fill();
+                        } else if (p.shape === 'bubble') {
+                            ctx.strokeStyle = '#cbd5e1';
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                            ctx.stroke();
+                        } else {
+                            // 네모 파티클
+                            ctx.fillRect(p.x - p.size/2, p.y - p.size/2, p.size, p.size);
+                        }
+                        ctx.restore();
+                    }
+                });
+
+                if (aliveCount > 0) {
+                    animationFrameId = requestAnimationFrame(loop);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            loop();
+        }
+    </script>
+</body>
+</html>
